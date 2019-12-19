@@ -5,6 +5,7 @@ import ContactForm from './components/ContactForm.js';
 
 import { contacts_json } from './tasks.json';
 import ContactEditForm from './components/ContactEditForm.js';
+import Login from './components/Login.js';
 
 function App() {
 
@@ -12,8 +13,10 @@ function App() {
     []
   );
   const [tipo_telefono, setTipo_telefono] = useState([]);
-  
 
+  const [flag, setFlag] = useState(false);
+  
+  
 
   useEffect(() => {
 
@@ -37,6 +40,27 @@ function App() {
     
   }, []);
   useEffect(() => console.log("DidUpdate"));
+  
+
+  async function deleteContact(id) {
+    try {
+      let config = {
+        method: 'DELETE',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify({
+          'id':id
+        })
+    }
+      let res = await fetch('http://127.0.0.1:8000/api/contact/'+id,config);
+      let data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log("Se fue al catch");
+    }
+  }
 
   
   const contactos_const = contactos.map((todo, i) => {
@@ -85,10 +109,13 @@ function App() {
               className="btn btn-danger"
               onClick={() => {
                 if (window.confirm('¿Estas seguro que deceas eliminar?')) {
+                  
+                  deleteContact(todo.id);
                   setContactos(
                     contactos.filter(i => {
                       return i.id !== todo.id
-                    })
+                    }
+                    )
                   )
                 }
               }
@@ -101,12 +128,31 @@ function App() {
     )
   })
   return (
+
+    (flag)?
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
         <a className="text-white">
           Contactos
             <span className="badge badge-pill badge-light ml-2">{contactos.length}</span>
         </a>
+        <button
+              className="btn btn-danger"
+              onClick={() => {
+                if (window.confirm('¿Estas seguro que deceas cerrar sesion?')) {
+                  
+                  /* deleteContact(todo.id);
+                  setContactos(
+                    contactos.filter(i => {
+                      return i.id !== todo.id
+                    }
+                    )
+                  ) */
+                }
+              }
+              } >Logout
+            </button>
+
       </nav>
       <div className="container">
         <div className="row mt-4">
@@ -137,6 +183,17 @@ function App() {
         </div>
       </div>
     </div>
+  :
+  <Login
+    onSendData={(datos) => {
+
+      console.log(datos);
+      setFlag(true);
+    }
+
+    }
+    ></Login>
+  
   );
 }
 
