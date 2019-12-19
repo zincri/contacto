@@ -15,7 +15,7 @@ const ContactEditForm = props => {
     const handleInput = e => {
         const value = e.target.value;
         const name = e.target.name;
-        console.log(e.target.name + " " + e.target.value);
+        //console.log(e.target.name + " " + e.target.value);
         setTodo({
             ...todo, [name]: value
         })
@@ -53,11 +53,10 @@ const ContactEditForm = props => {
     
     //console.log(tipo_telefono);
     useEffect(() => {
-        console.log("useeffect");
-        if (show === true) {
-        console.log("Dentro de");    
+        //console.log("useeffect");
+        /* if (show === true) {   
             //No es necesaria por que ya hiciste la consulta antes
-            console.log("paso en el useeffect");
+            
             async function getTypePhones() {
                 try {
                     let res = await fetch('http://127.0.0.1:8000/api/contact/create');
@@ -75,7 +74,7 @@ const ContactEditForm = props => {
             }
             getTypePhones();
            
-        }
+        } */
     },[]);
 
     return (

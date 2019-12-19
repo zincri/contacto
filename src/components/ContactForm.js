@@ -8,8 +8,7 @@ const ContactForm = props =>{
 
     const [todo,setTodo] = useState(
         {
-            
-            //id: "",
+            id: "",
             nombre: "",
             apellido_paterno: "",
             apellido_materno: "",

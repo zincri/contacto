@@ -33,11 +33,12 @@ function App() {
       }
     }
     getContacts();
+    console.log("dimount")
     
   }, []);
+  useEffect(() => console.log("DidUpdate"));
 
-  console.log("renderizado");
-  console.log(contactos);
+  
   const contactos_const = contactos.map((todo, i) => {
     return (
       <div key={todo.id} className="col-md-4 col-sm-4 rowml">
@@ -57,11 +58,27 @@ function App() {
                     onSendTipos={tipo_telefono}
                     
                     onAddContact={(todo) => {
-                      /* setContactos(
-                        [...contactos, todo]
-                      ) */
+                      // AQUI VAS A EMPEZAR CON EL UPDATE
+                      let contactos_editados = contactos.map(function(dato){
+                      if(dato.id === todo.id){
+                        console.log("Si paso ");
+                        dato.id = todo.id;
+                        dato.nombre = todo.nombre;
+                        dato.apellido_paterno = todo.apellido_paterno;
+                        dato.apellido_materno = todo.apellido_materno;
+                        dato.edad = todo.edad;
+                        dato.numero_telefono = todo.numero_telefono;
+                        dato.created_at = todo.created_at;
+                        dato.updated_at = todo.updated_at;
+                        dato.user_id = todo.user_id;
+                        
+                      }
+                      return dato;
+                      })
+
+                      setContactos(contactos_editados);
                     }
-                    }
+                  }
                   ></ContactEditForm>
 
             <button
@@ -107,7 +124,6 @@ function App() {
                 (parametro) => 
                 {
                   setTipo_telefono(parametro)
-                  console.log(parametro);
                 }
               }
               >
