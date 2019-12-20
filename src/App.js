@@ -20,6 +20,8 @@ function App() {
 
   useEffect(() => {
 
+
+
     async function getContacts() {
       try {
         let res = await fetch('http://127.0.0.1:8000/api/contact');
@@ -36,10 +38,8 @@ function App() {
       }
     }
     getContacts();
-    console.log("dimount")
     
   }, []);
-  useEffect(() => console.log("DidUpdate"));
   
 
   async function deleteContact(id) {
@@ -57,6 +57,42 @@ function App() {
       let res = await fetch('http://127.0.0.1:8000/api/contact/'+id,config);
       let data = await res.json();
       console.log(data);
+    } catch (error) {
+      console.log("Se fue al catch");
+    }
+  }
+
+  async function logoutAccount() {
+    try {
+      let config = {
+        method: 'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+        }
+    }
+      let res = await fetch('http://127.0.0.1:8000/api/logout',config);
+      let data = await res.json();
+      console.log(data);
+      setFlag(false);
+    } catch (error) {
+      console.log("Se fue al catch");
+    }
+  }
+
+  async function checkLogout() {
+    try {
+      let config = {
+        method: 'GET',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+        }
+    }
+      let res = await fetch('http://127.0.0.1:8000/api/check',config);
+      let data = await res.json();
+      console.log(data);
+      setFlag(false);
     } catch (error) {
       console.log("Se fue al catch");
     }
@@ -105,6 +141,8 @@ function App() {
                   }
                   ></ContactEditForm>
 
+            
+            
             <button
               className="btn btn-danger"
               onClick={() => {
@@ -136,11 +174,24 @@ function App() {
           Contactos
             <span className="badge badge-pill badge-light ml-2">{contactos.length}</span>
         </a>
+
+        <button
+              className="btn btn-primary"
+              onClick={() => {
+                if (window.confirm('¿CHECAR?')) {
+                  
+                  //checkLogout();
+                  
+                }
+              }
+              } >Check
+            </button>
+
         <button
               className="btn btn-danger"
               onClick={() => {
                 if (window.confirm('¿Estas seguro que deceas cerrar sesion?')) {
-                  
+                  logoutAccount();
                   /* deleteContact(todo.id);
                   setContactos(
                     contactos.filter(i => {

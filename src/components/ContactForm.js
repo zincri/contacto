@@ -25,7 +25,6 @@ const ContactForm = props =>{
     const [tipo_telefono,setTipo_telefono] = useState([]);
 
     useEffect(() => {
-        console.log("Form de creacion");
         async function getTypePhones() {
           try {
             let res = await fetch('http://127.0.0.1:8000/api/contact/create');
