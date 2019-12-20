@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ContactForm from './components/ContactForm.js';
-
+import LoginForm from './components/LoginForm.js';
 import { contacts_json } from './tasks.json';
 import ContactEditForm from './components/ContactEditForm.js';
 
@@ -13,7 +13,8 @@ function App() {
   );
   const [tipo_telefono, setTipo_telefono] = useState([]);
   
-
+  const [inicio,setLogin] = useState(false);
+    
 
   useEffect(() => {
 
@@ -26,7 +27,7 @@ function App() {
         );
 
       } catch (error) {
-        console.log("Se fue al catch");
+        console.log("pasó al catch");
         setContactos(
           contacts_json
         );
@@ -36,7 +37,29 @@ function App() {
     
   }, []);
 
-  console.log("renderizado");
+  async function deleteContacts(id){
+    //e.preventDefault();
+
+    try {
+        let config = {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(id)
+        }
+        let res = await fetch("http://127.0.0.1:8000/api/contact/"+id,config);
+        //console.log(todo);
+        //(let res = await fetch(url, config);
+        let data = await res.json();
+        //props.onAddContact(data);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  
   console.log(contactos);
   const contactos_const = contactos.map((todo, i) => {
     return (
@@ -60,6 +83,23 @@ function App() {
                       /* setContactos(
                         [...contactos, todo]
                       ) */
+                      let edit_contact = contactos.map(function(dato){
+                        if(dato.id === todo.id){
+                        
+                        dato.id = todo.id;
+                        dato.nombre = todo.nombre;
+                        dato.apellido_paterno = todo.apellido_paterno;
+                        dato.apellido_materno = todo.apellido_materno;
+                        dato.edad = todo.edad;
+                        dato.numero_telefono = todo.numero_telefono;
+                        dato.created_at = todo.created_at;
+                        dato.updated_at = todo.updated_at;
+                        dato.user_id = todo.user_id;
+
+                        }
+                        return dato;
+                      })
+                      setContactos(edit_contact);
                     }
                     }
                   ></ContactEditForm>
@@ -68,6 +108,7 @@ function App() {
               className="btn btn-danger"
               onClick={() => {
                 if (window.confirm('¿Estas seguro que deceas eliminar?')) {
+                  deleteContacts(todo.id)
                   setContactos(
                     contactos.filter(i => {
                       return i.id !== todo.id
@@ -83,13 +124,18 @@ function App() {
       </div>
     )
   })
+  
+  
   return (
+
+   (inicio) ? 
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
         <a className="text-white">
           Contactos
             <span className="badge badge-pill badge-light ml-2">{contactos.length}</span>
         </a>
+        
       </nav>
       <div className="container">
         <div className="row mt-4">
@@ -121,6 +167,12 @@ function App() {
         </div>
       </div>
     </div>
+    :
+    <LoginForm
+    onSendData={(user)=>{
+      setLogin(true);
+    }}
+    ></LoginForm>
   );
 }
 

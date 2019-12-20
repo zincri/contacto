@@ -38,6 +38,9 @@ const ContactForm = props =>{
             setTipo_telefono(
                 data
             )
+            setTodo({
+                ...todo,['tipo_telefono']:data[0].id
+            })
             props.onAddTipo(data);
             
           }catch (error) {

@@ -87,7 +87,7 @@ const ContactEditForm = props => {
             <Modal show={show} onHide={handleShow}>
 
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title>Editar Tarea</Modal.Title>
+                    <Modal.Title>Editar Contacto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
