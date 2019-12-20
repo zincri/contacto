@@ -36,6 +36,9 @@ const ContactForm = props =>{
             setTipo_telefono(
                 data
             )
+            setTodo({
+                ...todo,['tipo_telefono']: data[0].id
+            })
             props.onAddTipo(data);
             
           }catch (error) {
@@ -52,7 +55,7 @@ const ContactForm = props =>{
     const handleInput = e => {
         const value = e.target.value;
         const name = e.target.name;
-        console.log(e.target.name+" "+e.target.value);
+        //console.log(e.target.name+" "+e.target.value);
         setTodo({
             ...todo,[name]: value
         })
@@ -61,7 +64,6 @@ const ContactForm = props =>{
     async function handleSubmit(e) {
 
         e.preventDefault();
-        
         
             try {
                 let config = {

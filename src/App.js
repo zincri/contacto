@@ -178,9 +178,9 @@ function App() {
         <button
               className="btn btn-primary"
               onClick={() => {
-                if (window.confirm('¿CHECAR?')) {
+                if (window.confirm('¿Checar?')) {
                   
-                  //checkLogout();
+                  checkLogout()
                   
                 }
               }
@@ -191,7 +191,7 @@ function App() {
               className="btn btn-danger"
               onClick={() => {
                 if (window.confirm('¿Estas seguro que deceas cerrar sesion?')) {
-                  logoutAccount();
+                  logoutAccount()
                   /* deleteContact(todo.id);
                   setContactos(
                     contactos.filter(i => {
