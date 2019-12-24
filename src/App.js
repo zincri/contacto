@@ -14,14 +14,13 @@ function App() {
   );
   const [tipo_telefono, setTipo_telefono] = useState([]);
 
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
   const [flag, setFlag] = useState(false);
   
   
 
   useEffect(() => {
-
-
-
     async function getContacts() {
       try {
         let res = await fetch('http://127.0.0.1:8000/api/contact');
@@ -74,7 +73,6 @@ function App() {
       let res = await fetch('http://127.0.0.1:8000/api/logout',config);
       let data = await res.json();
       console.log(data);
-      setFlag(false);
     } catch (error) {
       console.log("Se fue al catch");
     }
@@ -92,7 +90,6 @@ function App() {
       let res = await fetch('http://127.0.0.1:8000/api/check',config);
       let data = await res.json();
       console.log(data);
-      setFlag(false);
     } catch (error) {
       console.log("Se fue al catch");
     }
@@ -239,7 +236,7 @@ function App() {
     onSendData={(datos) => {
 
       console.log(datos);
-      setFlag(true);
+      setFlag(true)
     }
 
     }

@@ -35,11 +35,11 @@ async function handleSubmit(e) {
             let res = await fetch('http://127.0.0.1:8000/api/login',config);
             let data = await res.json();
             console.log(res);
-            if(res.status!==200){
+             if(res.status!==200){
                 console.log(res.statusText);
             }
             else{
-                props.onSendData(data);//AQUI SE LO VAS A MANDAR A LA FLAG
+                props.onSendData(data);//AQUI SE LO VAS A MANDAR AL APP
             }
 
           }catch (error) {
