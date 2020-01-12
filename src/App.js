@@ -14,7 +14,7 @@ function App() {
   );
   const [tipo_telefono, setTipo_telefono] = useState([]);
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('access_token') ||'');
   const [user, setUser] = useState(null);
   const [flag, setFlag] = useState(false);
   
@@ -52,7 +52,7 @@ function App() {
         body: JSON.stringify({
           'id':id
         })
-    }
+      }
       let res = await fetch('http://127.0.0.1:8000/api/contact/'+id,config);
       let data = await res.json();
       console.log(data);
@@ -68,26 +68,34 @@ function App() {
         headers:{
             'Accept':'application/json',
             'Content-Type':'application/json',
-        }
+        },
+        body: JSON.stringify({
+          'token':token
+        })
     }
       let res = await fetch('http://127.0.0.1:8000/api/logout',config);
       let data = await res.json();
+      localStorage.removeItem('access_token');
+      setToken('');
       console.log(data);
     } catch (error) {
       console.log("Se fue al catch");
     }
   }
 
-  async function checkLogout() {
+  async function checkMe() {
     try {
       let config = {
-        method: 'GET',
+        method: 'POST',
         headers:{
             'Accept':'application/json',
             'Content-Type':'application/json',
-        }
+        },
+        body: JSON.stringify({
+          'token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3ODg2MjMwOSwiZXhwIjoxNTc4ODY1OTA5LCJuYmYiOjE1Nzg4NjIzMDksImp0aSI6IjlpNHZzRFU4ckNBSWU2WUMiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.bXw32oQ6Kf6Q4-iPvR_tryWhu1HG3bBhHnhpg0DyrQc'
+        })
     }
-      let res = await fetch('http://127.0.0.1:8000/api/check',config);
+      let res = await fetch('http://127.0.0.1:8000/api/me',config);
       let data = await res.json();
       console.log(data);
     } catch (error) {
@@ -164,7 +172,7 @@ function App() {
   })
   return (
 
-    (flag)?
+    (token != '')?
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
         <a className="text-white">
@@ -177,11 +185,11 @@ function App() {
               onClick={() => {
                 if (window.confirm('¿Checar?')) {
                   
-                  checkLogout()
+                  checkMe()
                   
                 }
               }
-              } >Check
+              } >Check me
             </button>
 
         <button
@@ -189,13 +197,6 @@ function App() {
               onClick={() => {
                 if (window.confirm('¿Estas seguro que deceas cerrar sesion?')) {
                   logoutAccount()
-                  /* deleteContact(todo.id);
-                  setContactos(
-                    contactos.filter(i => {
-                      return i.id !== todo.id
-                    }
-                    )
-                  ) */
                 }
               }
               } >Logout
@@ -235,8 +236,10 @@ function App() {
   <Login
     onSendData={(datos) => {
 
-      console.log(datos);
-      setFlag(true)
+      console.log(datos.access_token);
+      setToken(datos.access_token);
+      localStorage.setItem('access_token', datos.access_token);
+      //setFlag(true)
     }
 
     }
