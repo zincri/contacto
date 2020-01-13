@@ -5,6 +5,7 @@ import ContactForm from './components/ContactForm.js';
 import LoginForm from './components/LoginForm.js';
 import { contacts_json } from './tasks.json';
 import ContactEditForm from './components/ContactEditForm.js';
+import Reference from './components/Reference';
 
 function App() {
 
@@ -12,8 +13,9 @@ function App() {
     []
   );
   const [tipo_telefono, setTipo_telefono] = useState([]);
+    
   
-  const [inicio,setLogin] = useState(false);
+  const [inicio,setLogin] = useState(true);
     
 
   useEffect(() => {
@@ -116,8 +118,9 @@ function App() {
                   )
                 }
               }
-              } >Delete
-            </button>
+              }>Delete</button>
+
+           <Reference onSendTodo={todo.reference}></Reference>
 
           </div>
         </div>
