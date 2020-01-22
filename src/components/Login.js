@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import callApi from '../helpers/ApiService.js';
 import './../css/Login.scss';
 
 const Login = props => {
@@ -18,7 +19,7 @@ const handleInput = e => {
     
     
 }
-async function handleSubmit(e) {
+/* async function handleSubmit(e) {
 
     e.preventDefault();
     
@@ -45,7 +46,54 @@ async function handleSubmit(e) {
           }catch (error) {
               console.log(error);
         } 
+
+}
+ */
+async function handleSubmit(e) {
+
+    e.preventDefault();
     
+    
+        /* try {
+            let config = {
+                method: 'POST',
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json',
+                },
+                body: JSON.stringify(datos)
+            }
+            let res = await fetch('http://127.0.0.1:8000/api/login',config);
+            let data = await res.json();
+            console.log(res);
+             if(res.status!==200){
+                console.log(res.statusText);
+            }
+            else{
+                props.onSendData(data);//AQUI SE LO VAS A MANDAR AL APP
+            }
+
+          }catch (error) {
+              console.log(error);
+        }  */
+    
+        const headers = {
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+        }
+        /* axios.post(`http://127.0.0.1:8000/api/login`, datos , headers)
+        .then(res => {
+            if(res.status!==200){
+                console.log(res.statusText);
+            }
+            else{
+                props.onSendData(res.data);//AQUI SE LO VAS A MANDAR AL APP
+            }
+        })
+        .catch( error => {
+            console.log(error);
+        }) */
+
 }
 
 

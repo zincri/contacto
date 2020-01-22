@@ -1,9 +1,10 @@
 import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
+import { Checkbox } from 'react-bootstrap';
 
 const ContactEditForm = props => {
-    const [todo, setTodo] = useState(props.onSendTodo);
+    const [contacto, setContacto] = useState(props.onSendContacto);
 
 
     //Modal
@@ -15,9 +16,8 @@ const ContactEditForm = props => {
     const handleInput = e => {
         const value = e.target.value;
         const name = e.target.name;
-        //console.log(e.target.name + " " + e.target.value);
-        setTodo({
-            ...todo, [name]: value
+        setContacto({
+            ...contacto, [name]: value
         })
 
     }
@@ -26,59 +26,38 @@ const ContactEditForm = props => {
 
 
         e.preventDefault();
-
-        try {
-            let config = {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(todo)
+        if(props.onSendToken!==''){
+            try {
+                let config = {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'bearer '+props.onSendToken,
+                    },
+                    body: JSON.stringify(contacto)
+                }
+                var url = "http://127.0.0.1:8000/api/contact/" + contacto.id;
+                console.log(contacto);
+                let res = await fetch(url, config);
+                let data = await res.json();
+                props.onAddContact(data);
+            } catch (error) {
+                console.log(error);
             }
-            var url = "http://127.0.0.1:8000/api/contact/" + todo.id;
-            //console.log(todo);
-            let res = await fetch(url, config);
-            let data = await res.json();
-            props.onAddContact(data);
-        } catch (error) {
-            console.log(error);
         }
 
 
     }
-
-
-    const [tipo_telefono, setTipo_telefono] = useState([]);
-    
-    //console.log(tipo_telefono);
     useEffect(() => {
         //console.log("useeffect");
-        /* if (show === true) {   
-            //No es necesaria por que ya hiciste la consulta antes
-            
-            async function getTypePhones() {
-                try {
-                    let res = await fetch('http://127.0.0.1:8000/api/contact/create');
-                    let data = await res.json();
-                    
-                    setTipo_telefono(
-                        data
-                    )
-
-                } catch (error) {
-                    setTipo_telefono(
-                        tipo_telefono
-                    )
-                }
-            }
-            getTypePhones();
-           
-        } */
+        
     },[]);
 
     return (
         <>
+
+
 
             <Button variant="info" onClick={handleShow}>Edit</Button>
 
@@ -97,7 +76,7 @@ const ContactEditForm = props => {
                             <input
                                 type="text"
                                 name="nombre"
-                                value={todo.nombre}
+                                value={contacto.nombre}
                                 onChange={handleInput}
                                 className="form-control"
                                 placeholder="Nombre" />
@@ -106,7 +85,7 @@ const ContactEditForm = props => {
                             <input
                                 type="text"
                                 name="apellido_paterno"
-                                value={todo.apellido_paterno}
+                                value={contacto.apellido_paterno}
                                 onChange={handleInput}
                                 className="form-control"
                                 placeholder="Apellido Paterno" />
@@ -115,7 +94,7 @@ const ContactEditForm = props => {
                             <input
                                 type="text"
                                 name="apellido_materno"
-                                value={todo.apellido_materno}
+                                value={contacto.apellido_materno}
                                 onChange={handleInput}
                                 className="form-control"
                                 placeholder="Apellido Materno" />
@@ -124,7 +103,7 @@ const ContactEditForm = props => {
                             <input
                                 type="text"
                                 name="edad"
-                                value={todo.edad}
+                                value={contacto.edad}
                                 onChange={handleInput}
                                 className="form-control"
                                 placeholder="Edad" />
@@ -148,7 +127,7 @@ const ContactEditForm = props => {
                             <input
                                 type="text"
                                 name="numero_telefono"
-                                value={todo.numero_telefono}
+                                value={contacto.numero_telefono}
                                 onChange={handleInput}
                                 className="form-control"
                                 placeholder="Numero Telefono" />

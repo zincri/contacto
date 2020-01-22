@@ -17,7 +17,7 @@ const ContactForm = props =>{
             numero_telefono: "",
             created_at: "",
             updated_at: "",
-            user_id: 3,
+            user_id: 1,
         }
 
     );
@@ -27,12 +27,17 @@ const ContactForm = props =>{
     useEffect(() => {
         async function getTypePhones() {
           try {
-            let res = await fetch('http://127.0.0.1:8000/api/contact/create');
+            let config = {
+                method: 'GET',
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json',
+                    'Authorization': 'bearer '+props.onSendToken,
+        
+                },
+              }
+            let res = await fetch('http://127.0.0.1:8000/api/contact/create',config);
             let data = await res.json();
-            /* setTodo(
-                {...todo,[todo.tipo_telefono]:data
-                }
-            ); */
             setTipo_telefono(
                 data
             )
@@ -42,13 +47,15 @@ const ContactForm = props =>{
             props.onAddTipo(data);
             
           }catch (error) {
-            setTipo_telefono(    
+            /* setTipo_telefono(    
                 tipo_telefono
-            )
+            ) */
           }
         }
-        //console.log(tipo_telefono);
-        getTypePhones();
+        if(props.onSendToken!==''){
+            getTypePhones();
+        }
+        
         
     },[]);
 
@@ -64,6 +71,7 @@ const ContactForm = props =>{
     async function handleSubmit(e) {
 
         e.preventDefault();
+        console.log(todo);
         
             try {
                 let config = {
@@ -76,6 +84,7 @@ const ContactForm = props =>{
                 }
                 let res = await fetch('http://127.0.0.1:8000/api/contact/',config);
                 let data = await res.json();
+                console.log(data);
                 props.onAddTodo(data);
 
               }catch (error) {
@@ -134,9 +143,6 @@ const ContactForm = props =>{
                                 tipo_telefono.map((tipo,i) => 
                                 <option key={tipo.id} value={tipo.id} > {tipo.nombre_tipo}</option>
                                 )
-                                /* (todo.tipo_telefono).map((tipo,i) => 
-                                <option value ={tipo.id} > {tipo.nombre_tipo}</option>)
-                                 */
                                 }
 
                         </select>
