@@ -15,7 +15,6 @@ function App() {
   const [tipo_telefono, setTipo_telefono] = useState([]);
 
   const [token, setToken] = useState(localStorage.getItem('access_token') ||'');
-  const [flag, setFlag] = useState(false);
   const [user, setUser] = useState('');
 
   
@@ -32,6 +31,7 @@ function App() {
               'Accept':'application/json',
               'Content-Type':'application/json',
               'Authorization': 'bearer '+token,
+              //'token': token falla - no lo descomentes
   
           },
         }
@@ -95,7 +95,6 @@ function App() {
       let data = await res.json();
       localStorage.removeItem('access_token');
       setToken('');
-      setFlag(false);
       console.log(data);
     } catch (error) {
       console.log("Se fue al catch");
@@ -120,10 +119,8 @@ function App() {
       if(res.status===400){
         localStorage.removeItem('access_token');
         setToken('');
-        setFlag(false);
       }
       setUser(data);
-      setFlag(true);
       console.log(res);
 
     } catch (error) {
@@ -196,7 +193,7 @@ function App() {
   })
   return (
 
-    (token !== '' && flag===true)?
+    (token !== '')?
     <div className="App">
       <nav className="navbar navbar-dark bg-dark">
         <a className="text-white">
@@ -228,11 +225,7 @@ function App() {
 
       </nav>
       <div className="container">
-      <div className="row">
-              <div className="col-3">
-              {token}
-              </div>
-          </div>
+    
         <div className="row mt-4">
           <div className="col-md-3">
             <img src={logo} className="App-logo" alt="logo" />
@@ -271,8 +264,8 @@ function App() {
   <Login
     onSendData={(datos) => {
       setToken(datos.access_token);
+      console.log(datos.access_token);
       setUser(datos.user);
-      setFlag(true);
       localStorage.setItem('access_token', datos.access_token);
       localStorage.setItem('user', datos.user);
     }

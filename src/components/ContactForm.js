@@ -8,7 +8,7 @@ const ContactForm = props =>{
 
     const [todo,setTodo] = useState(
         {
-            id: "",
+            token:props.onSendToken,
             nombre: "",
             apellido_paterno: "",
             apellido_materno: "",
@@ -16,8 +16,7 @@ const ContactForm = props =>{
             tipo_telefono:"",
             numero_telefono: "",
             created_at: "",
-            updated_at: "",
-            user_id: 1,
+            updated_at: ""
         }
 
     );
@@ -33,7 +32,6 @@ const ContactForm = props =>{
                     'Accept':'application/json',
                     'Content-Type':'application/json',
                     'Authorization': 'bearer '+props.onSendToken,
-        
                 },
               }
             let res = await fetch('http://127.0.0.1:8000/api/contact/create',config);
@@ -71,7 +69,6 @@ const ContactForm = props =>{
     async function handleSubmit(e) {
 
         e.preventDefault();
-        console.log(todo);
         
             try {
                 let config = {
@@ -83,6 +80,7 @@ const ContactForm = props =>{
                     body: JSON.stringify(todo)
                 }
                 let res = await fetch('http://127.0.0.1:8000/api/contact/',config);
+                console.log(res);
                 let data = await res.json();
                 console.log(data);
                 props.onAddTodo(data);
